@@ -1,0 +1,46 @@
+#uicontainer {
+    position: absolute;
+    left: 0px;
+
+    margin: 10px;
+}
+
+#rangeo {
+    position: relative;    
+
+    /*-webkit-appearance: slider-vertical;*/
+    transform: rotate(-90deg);
+
+    width: 300px;
+    height: 5px;
+    padding: 5px;
+
+    transform-origin: 150px 150px;
+}
+
+.btnDepth {
+    display: inline-block;
+
+    width: 60px;
+    height: 30px;
+
+    font-size: large;
+    font-weight: bold;
+
+    text-align: center;
+
+    background-color: rgba(0, 0, 0, 0.5);
+
+    text-decoration: none;
+
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+
+    vertical-align: middle;
+
+    margin-bottom: 20px;
+    border-radius: 5px;
+}

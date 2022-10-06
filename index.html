@@ -37,6 +37,7 @@
 
     <title>Piazza Armerina App</title>
     <link rel="stylesheet" type="text/css" href="/res/css/aton.css">
+    <link rel="stylesheet" type="text/css" href="app.css">
 
     <!-- Vendors -->
     <script type="text/javascript" src="/vendors/vendors.min.js"></script>
@@ -54,6 +55,11 @@
 <body oncontextmenu="return false;">
     <!-- Top Toolbar -->
     <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left"></div>
+
+    <div id='uicontainer'>
+        <span id='iddepth' class='btnDepth'>0.0</span><br>
+        <input type="range" id="rangeo" min="0.0" max="5.1" step="0.1" value="5.0" />
+    </div>
 
 	<!-- Bottom Toolbar -->
 	<div id="idBottomToolbar" class="atonToolbar atonToolbar-bottom"></div>
