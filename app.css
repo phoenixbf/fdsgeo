@@ -15,16 +15,40 @@
 #rangeo {
     position: relative;    
 
-    /*-webkit-appearance: slider-vertical;*/
     transform: rotate(-90deg);
 
     width: 300px;
     height: 5px;
+    
     padding: 2px;
 
     transform-origin: 300px 0px;
 
     margin-right: 40px;
+}
+  
+
+
+.btnInfo {
+    display: inline-block;
+
+    width: 40px;
+    height: 40px;
+
+    text-align: center;
+
+    background-color: rgba(0, 0, 0, 0.5);
+
+    text-decoration: none;
+
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+
+    vertical-align: middle;
+    border-radius: 5px;
 }
 
 .btnDepth {
@@ -50,7 +74,9 @@
 
     vertical-align: middle;
 
+    margin-top: 20px;
     margin-bottom: 20px;
+
     border-radius: 5px;
 }
 
@@ -76,8 +102,10 @@
 .info {
     position: absolute;
     left: 0px;
-    bottom: 20px;
+    bottom: 50px;
 
     width: 200px;
     height: 200px;
+
+    pointer-events:none;
 }

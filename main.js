@@ -4,6 +4,8 @@
 ===============================================*/
 let APP = ATON.App.realize();
 
+window.APP = APP;
+
 APP.mats = [];
 
 // APP.setup() is required for web-app initialization
@@ -43,6 +45,25 @@ APP.setup = ()=>{
 
     // Sections
 /*
+    APP.sectCol = new THREE.Color(0,0,0);
+
+    APP.mSect = new THREE.Mesh( 
+        new THREE.PlaneGeometry( 1, 1 ),
+        new THREE.MeshBasicMaterial({
+            color: APP.sectCol,
+            side: THREE.DoubleSide,
+            transparent: true,
+            depthWrite: false,
+            opacity: 0.2
+        })
+    );
+
+    APP.mSect.rotation.set(-1.57079632679,0.0,0.0);
+    APP.mSect.scale.set(40,40,40);
+    ATON.getRootScene().add( APP.mSect );
+*/
+
+/*
     APP.clipPlanes = [
         new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0.5 )
     ];
@@ -65,12 +86,29 @@ APP.setup = ()=>{
         $("#iddepth").text(cm + " cm");
     });
 
+    APP.popupWelcome();
+
     ATON.Nav.setAndRequestHomePOV(
         new ATON.POV()
-            .setPosition(-20,10,20)
+            .setPosition(-20,20,20)
             .setTarget(0,0,-1)
             .setFOV(70.0)
     );
+};
+
+APP.popupWelcome = ()=>{
+    let htmlcontent = "<div class='atonPopupTitle'>Acquisizione Georadar</div>";
+
+    htmlcontent += "<div class='atonPopupDescriptionContainer'>...</div>";
+
+    htmlcontent += "<div class='atonBTN atonBTN-green' id='btnOK' style='width:90%'>OK</div>";
+
+    if ( !ATON.FE.popupShow(htmlcontent) ) return;
+
+    $("#btnOK").click(()=>{
+        ATON.FE.popupClose();
+        //ATON.toggleFullScreen();
+    });
 };
 
 APP.setupNode = (N)=>{
@@ -146,6 +184,8 @@ APP.setupNode = (N)=>{
 };
 
 APP.setSectionH = (h)=>{
+    //APP.mSect.position.y = h;
+
 /*
     for (let p in APP.clipPlanes){
         APP.clipPlanes[p].constant = h;
