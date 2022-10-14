@@ -21,13 +21,14 @@ APP.setup = ()=>{
     APP.gMain.setPosition(-0.5,0.0,0.1);
     //APP.gMain.setScale(0.1,0.1,0.1);
 
-    APP.gTerrain = ATON.createSceneNode("terrain").load(APP.contentPath+"terreno-limitrofo-bucato.gltf"); //, ()=>{ APP.setupNode(APP.gTerrain) });
+    APP.gTerrain = ATON.createSceneNode("terrain").load(APP.contentPath+"terreno-limitrofo-bucato.gltf", ()=>{ APP.setupNode(APP.gTerrain) });
 	APP.gTerrain.attachTo(APP.gMain);
 
     APP.gTerrainLarge = ATON.createSceneNode("terrainlarge").load(APP.contentPath+"terreno-ampio.gltf", ()=>{ APP.setupNode(APP.gTerrainLarge) });
 	APP.gTerrainLarge.attachTo(APP.gMain);
+    APP.gTerrainLarge.position.y = 0.2;
 
-    APP.gCont = ATON.createSceneNode("vasca").load(APP.contentPath+"vasca-flip.gltf"); //, ()=>{ APP.setupNode(APP.gCont) });
+    APP.gCont = ATON.createSceneNode("vasca").load(APP.contentPath+"vasca-flip.gltf", ()=>{ APP.setupNode(APP.gCont) });
 	APP.gCont.attachTo(APP.gMain);
     //APP.gCont.setScale(1,0.075,1);
 
@@ -35,10 +36,19 @@ APP.setup = ()=>{
 	APP.gBlobs.attachTo(APP.gMain);
     //APP.gBlobs.setScale(1,0.075,1);
 
+    ATON.setBackgroundColor( new THREE.Color(0.5,0.5,0.5) );
     //ATON.setMainLightDirection( new THREE.Vector3(-0.3, -0.5, 0.3) );
+    //ATON.toggleShadows(true);
     //ATON.FX.togglePass(ATON.FX.PASS_AO, true);
 
+    // Sections
+/*
+    APP.clipPlanes = [
+        new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 0.5 )
+    ];
 
+    ATON._renderer.localClippingEnabled = true;
+*/
     // UI
     ATON.FE.uiAddButtonHome("idBottomToolbar");
 	ATON.FE.uiAddButtonVR("idBottomToolbar");
@@ -50,9 +60,17 @@ APP.setup = ()=>{
         v -= 5.0;
 
         APP.setSectionH(v);
-        $("#iddepth").text(v.toPrecision(2));
+
+        let cm = parseInt( v * 100.0);
+        $("#iddepth").text(cm + " cm");
     });
 
+    ATON.Nav.setAndRequestHomePOV(
+        new ATON.POV()
+            .setPosition(-20,10,20)
+            .setTarget(0,0,-1)
+            .setFOV(70.0)
+    );
 };
 
 APP.setupNode = (N)=>{
@@ -64,6 +82,11 @@ APP.setupNode = (N)=>{
         }
 
         if ( c.material ){
+/*
+            c.material.clippingPlanes   = APP.clipPlanes;
+            c.material.clipIntersection = true;
+            //c.material.clipShadows = true;
+*/
             let M = new CustomShaderMaterial({
                 baseMaterial: c.material,
         
@@ -100,14 +123,21 @@ APP.setupNode = (N)=>{
 
                     void main(){
 
-                        //if (vPositionW.y > h) csm_DiffuseColor.a = 0.2;
-                        if (vPositionW.y > h) discard;
+                        float dh = h - vPositionW.y;
+                        dh *= 4.0;
+                        dh = clamp(dh, 0.2,1.0);
+
+                        csm_DiffuseColor.a = dh;
+
+                        csm_DiffuseColor.rgb = mix(vec3(csm_DiffuseColor.g), csm_DiffuseColor.rgb, dh);
+
+                        //if (vPositionW.y > h) discard;
 
                     }`
             });
 
             c.material = M;
-            //c.material.transparent = true;
+            c.material.transparent = true;
             //c.material.depthWrite = false;
 
             APP.mats.push(M);
@@ -116,12 +146,16 @@ APP.setupNode = (N)=>{
 };
 
 APP.setSectionH = (h)=>{
-
+/*
+    for (let p in APP.clipPlanes){
+        APP.clipPlanes[p].constant = h;
+    }
+*/
     for (let i in APP.mats){
         APP.mats[i].uniforms.h.value = h;
     }
 
-    console.log(h);
+    //console.log(h);
 };
 
 /* APP.update() if you plan to use an update routine (executed continuously)
