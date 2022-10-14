@@ -39,9 +39,12 @@ APP.setup = ()=>{
     //APP.gBlobs.setScale(1,0.075,1);
 
     ATON.setBackgroundColor( new THREE.Color(0.5,0.5,0.5) );
+    ATON.setMainPanorama(APP.contentPath+"pano.jpg"); 
+
     //ATON.setMainLightDirection( new THREE.Vector3(-0.3, -0.5, 0.3) );
     //ATON.toggleShadows(true);
     //ATON.FX.togglePass(ATON.FX.PASS_AO, true);
+    //ATON.FX.togglePass(ATON.FX.PASS_BLOOM, true);
 
     // Sections
 /*
@@ -78,13 +81,17 @@ APP.setup = ()=>{
     $("#rangeo").on("input", ()=>{
         let v = parseFloat( $("#rangeo").val() );
 
-        v -= 5.0;
+        v -= 4.0;
 
         APP.setSectionH(v);
+
+        APP.setInfoMapFromH(v);
 
         let cm = parseInt( v * 100.0);
         $("#iddepth").text(cm + " cm");
     });
+
+    $("#infoimg").hide();
 
     APP.popupWelcome();
 
@@ -96,10 +103,39 @@ APP.setup = ()=>{
     );
 };
 
+APP.setInfoMapFromH = (h)=>{
+    if (h > -0.1){
+        $("#infoimg").hide();
+        //$("#infoimg").attr("src", "content/ui-map0.jpg");
+        return;
+    }
+
+    if (h < -2.0){
+        $("#infoimg").attr("src", "content/ui-map3.jpg");
+        $("#infoimg").show();
+        return;
+    }
+
+    if (h < -0.5){
+        $("#infoimg").attr("src", "content/ui-map2.jpg");
+        $("#infoimg").show();
+        return;
+    }
+
+    $("#infoimg").attr("src", "content/ui-map1.jpg");
+    $("#infoimg").show();
+
+};
+
 APP.popupWelcome = ()=>{
     let htmlcontent = "<div class='atonPopupTitle'>Acquisizione Georadar</div>";
 
-    htmlcontent += "<div class='atonPopupDescriptionContainer'>...</div>";
+    htmlcontent += "<div class='atonPopupDescriptionContainer'>";
+    htmlcontent += "<img src='content/ui-location.jpg' style='float:right'>";
+    htmlcontent += "<div style='text-align:center'><b>Campagna di Rilievo 2022, CNR ISPC Lecce</b></div><br>";
+    htmlcontent += "In una acquisizione Georadar vengono messe in evidenza le onde elettromagnetiche riflesse da strutture sepolte presenti a varie profondità. Per poterle visualizzare viene utilizzata una tecnica 3D che consente di costruire le <i>depth slices</i> che sono una sorta di scavo virtuale che mettono in correlazione le diverse onde elettromagnetiche riflesse e ne ricostruiscono le loro caratteristiche."
+    htmlcontent += "<br><div style='text-align:center'><img src='content/ui-area.jpg'></div>";
+    htmlcontent += "</div>";
 
     htmlcontent += "<div class='atonBTN atonBTN-green' id='btnOK' style='width:90%'>OK</div>";
 
