@@ -34,7 +34,7 @@ APP.setup = ()=>{
 	APP.gCont.attachTo(APP.gMain);
     //APP.gCont.setScale(1,0.075,1);
 
-    APP.gBlobs = ATON.createSceneNode("blobs").load(APP.contentPath+"blob.gltf", ()=>{ APP.setupNode(APP.gBlobs) });
+    APP.gBlobs = ATON.createSceneNode("blobs").load(APP.contentPath+"blob.gltf", ()=>{ APP.setupNode(APP.gBlobs, true) });
 	APP.gBlobs.attachTo(APP.gMain);
     //APP.gBlobs.setScale(1,0.075,1);
 
@@ -75,7 +75,8 @@ APP.setup = ()=>{
 */
     // UI
     ATON.FE.uiAddButtonHome("idBottomToolbar");
-	ATON.FE.uiAddButtonVR("idBottomToolbar");
+	
+    //ATON.FE.uiAddButtonVR("idBottomToolbar");
     //ATON.FE.uiAddButtonAR("idBottomToolbar");
 
     $("#rangeo").on("input", ()=>{
@@ -131,7 +132,7 @@ APP.popupWelcome = ()=>{
     let htmlcontent = "<div class='atonPopupTitle'>Acquisizione Georadar</div>";
 
     htmlcontent += "<div class='atonPopupDescriptionContainer'>";
-    htmlcontent += "<img src='content/ui-location.jpg' style='float:right'>";
+    //htmlcontent += "<img src='content/ui-location.jpg' style='float:right'>";
     htmlcontent += "<div style='text-align:center'><b>Campagna di Rilievo 2022, CNR ISPC Lecce</b></div><br>";
     htmlcontent += "In una acquisizione Georadar vengono messe in evidenza le onde elettromagnetiche riflesse da strutture sepolte presenti a varie profondità. Per poterle visualizzare viene utilizzata una tecnica 3D che consente di costruire le <i>depth slices</i> che sono una sorta di scavo virtuale che mettono in correlazione le diverse onde elettromagnetiche riflesse e ne ricostruiscono le loro caratteristiche."
     htmlcontent += "<br><div style='text-align:center'><img src='content/ui-area.jpg'></div>";
@@ -147,7 +148,7 @@ APP.popupWelcome = ()=>{
     });
 };
 
-APP.setupNode = (N)=>{
+APP.setupNode = (N, bOpaque)=>{
 
     N.traverse( c => {
         if ( c.isMesh ){
@@ -198,7 +199,7 @@ APP.setupNode = (N)=>{
                     void main(){
 
                         float dh = h - vPositionW.y;
-                        dh *= 4.0;
+                        dh *= 2.0;
                         dh = clamp(dh, 0.2,1.0);
 
                         csm_DiffuseColor.a = dh;
@@ -211,8 +212,11 @@ APP.setupNode = (N)=>{
             });
 
             c.material = M;
-            c.material.transparent = true;
-            //c.material.depthWrite = false;
+
+            if (!bOpaque){
+                c.material.transparent = true;
+                //c.material.depthWrite = false;
+            }
 
             APP.mats.push(M);
         }
