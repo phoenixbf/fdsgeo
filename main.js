@@ -20,12 +20,14 @@ APP.setup = ()=>{
     APP.gMain = ATON.createSceneNode("main");
     APP.gMain.attachToRoot();
 
-    APP.gMain.setPosition(-0.5,0.0,0.1);
-    //APP.gMain.setScale(0.1,0.1,0.1);
+    APP.wscale = 1.0; //0.1;
 
+    APP.gMain.setPosition(-0.5,0.0,0.1);
+    APP.gMain.setScale(APP.wscale,APP.wscale,APP.wscale);
+/*
     APP.gTerrain = ATON.createSceneNode("terrain").load(APP.contentPath+"terreno-limitrofo-bucato.gltf", ()=>{ APP.setupNode(APP.gTerrain) });
 	APP.gTerrain.attachTo(APP.gMain);
-
+*/
     APP.gTerrainLarge = ATON.createSceneNode("terrainlarge").load(APP.contentPath+"terreno-ampio.gltf", ()=>{ APP.setupNode(APP.gTerrainLarge) });
 	APP.gTerrainLarge.attachTo(APP.gMain);
     APP.gTerrainLarge.position.y = 0.2;
@@ -84,7 +86,7 @@ APP.setup = ()=>{
 
         v -= 4.0;
 
-        APP.setSectionH(v);
+        APP.setSectionH(v * APP.wscale);
 
         APP.setInfoMapFromH(v);
 
@@ -96,9 +98,10 @@ APP.setup = ()=>{
 
     APP.popupWelcome();
 
+    // Home
     ATON.Nav.setAndRequestHomePOV(
         new ATON.POV()
-            .setPosition(-20,20,20)
+            .setPosition(-20 * APP.wscale, 20* APP.wscale, 20 * APP.wscale)
             .setTarget(0,0,-1)
             .setFOV(70.0)
     );
@@ -166,7 +169,8 @@ APP.setupNode = (N, bOpaque)=>{
                 baseMaterial: c.material,
         
                 uniforms: {
-                    h: { type:'float', value: 0.1 }
+                    h: { type:'float', value: 0.1 },
+                    s: { type:'float', value: APP.wscale }
                 },
 
                 vertexShader:`
@@ -195,11 +199,12 @@ APP.setupNode = (N, bOpaque)=>{
                     //varying vec3 vNormalV;
 
                     uniform float h;
+                    uniform float s;
 
                     void main(){
 
                         float dh = h - vPositionW.y;
-                        dh *= 2.0;
+                        dh *= (2.0 / s);
                         dh = clamp(dh, 0.2,1.0);
 
                         csm_DiffuseColor.a = dh;
