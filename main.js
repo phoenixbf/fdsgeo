@@ -108,19 +108,19 @@ APP.setup = ()=>{
 };
 
 APP.setInfoMapFromH = (h)=>{
-    if (h > -0.1){
+    if (h > -0.4){
         $("#infoimg").hide();
         //$("#infoimg").attr("src", "content/ui-map0.jpg");
         return;
     }
 
-    if (h < -2.0){
+    if (h < -2.5){
         $("#infoimg").attr("src", "content/ui-map3.jpg");
         $("#infoimg").show();
         return;
     }
 
-    if (h < -0.5){
+    if (h < -1.5){
         $("#infoimg").attr("src", "content/ui-map2.jpg");
         $("#infoimg").show();
         return;
