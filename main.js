@@ -136,7 +136,7 @@ APP.popupWelcome = ()=>{
 
     htmlcontent += "<div class='atonPopupDescriptionContainer'>";
     //htmlcontent += "<img src='content/ui-location.jpg' style='float:right'>";
-    htmlcontent += "<div style='text-align:center'><b>Campagna di Rilievo 2022, CNR ISPC Lecce</b></div><br>";
+    htmlcontent += "<div style='text-align:center'><b>Campagna di Rilievo 2022, CNR ISPC Lecce</b><br>Autori: G. Leucci, L. De Giorgi, F. Giuri, I. Ferrari</div><br>";
     htmlcontent += "In una acquisizione Georadar vengono messe in evidenza le onde elettromagnetiche riflesse da strutture sepolte presenti a varie profondità. Per poterle visualizzare viene utilizzata una tecnica 3D che consente di costruire le <i>depth slices</i> che sono una sorta di scavo virtuale che mettono in correlazione le diverse onde elettromagnetiche riflesse e ne ricostruiscono le loro caratteristiche."
     htmlcontent += "<br><div style='text-align:center'><img src='content/ui-area.jpg'></div>";
     htmlcontent += "</div>";
